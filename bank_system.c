@@ -274,12 +274,12 @@ Bank_Account* login(LinkedList * list, char usrname[31], char passw[31])
     Bank_Account * temp = (Bank_Account*)malloc(sizeof(Bank_Account));
     Bank_Account_VoidInit(temp);
 
-    temp = list->head;
+       temp = list->head;
     while(temp)
     {
-        if(temp->username == usrname)
+        if(strcmp(temp->username, usrname)==0)
         {
-            if (temp->password == passw)
+            if (strcmp(temp->password, passw)==0)
                 return temp;
             else
                 return NULL;
@@ -405,6 +405,9 @@ Bank_Account * check_Existing_Accounnt_Id(LinkedList * bank , int id)
     return NULL;
 }
 
+
+
+
 //////// Open The Account //////////////
 
 ////// Choose The Service //////////////
@@ -415,7 +418,7 @@ Bank_Account * check_Existing_Accounnt_Id(LinkedList * bank , int id)
     if(account_id==0)
     {
         printf("Back To Main Menu...");
-        return NULL ;
+        return NULL;
     }
     int service_num=10;
     Bank_Account * account_u = (Bank_Account*)malloc(sizeof(Bank_Account));
@@ -443,6 +446,8 @@ Bank_Account * check_Existing_Accounnt_Id(LinkedList * bank , int id)
     return account_u;
 
 }
+
+
 
 
 //////////////////////  Make Transaction ///////////////////
@@ -566,9 +571,27 @@ int main(){
     system=Start_Bank_System();
 
     Bank_Account * sender = (Bank_Account*)malloc(sizeof(Bank_Account));
-    sender=Open_Existing_Account(&system);
+    
+    /*sender=Open_Existing_Account(&system);
     Make_Transaction(&system,sender);
     print_allAccounts(&system);
+*/
+
+
+    char username[31];
+    char pass[31];
+    printf("Please Enter Your UserName....\n");
+    scanf("%s",username);
+    printf("Please Enter Your Password....\n");
+    scanf("%s",pass);
+    sender=login(&system,username,pass);
+
+    //Make_Transaction(&system,sender);
+    //int money=Get_Cash(sender);
+    Deposit_in_Account(sender);
+    print_allAccounts(&system);
+
+
 
     return 0;
 
