@@ -487,18 +487,6 @@ void Make_Transaction(LinkedList * bank, Bank_Account * sender)
 
 }
 
-////////////////////////// Get Cash //////////////////////////
-void Get_Cash()
-{
-
-}
-
-////////////////////////// Deposit in Account /////////////////
-void Deposit_in_Account()
-{
-
-}
-
 
 int main(){
 
