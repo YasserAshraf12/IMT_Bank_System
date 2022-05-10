@@ -1,4 +1,3 @@
-
 /*******************************************************/
 
 /*   Description: Bank System Based On Linked_List     */
@@ -10,10 +9,12 @@
 #include<windows.h>
 #include <ctype.h>
 
-//User Account details
+/* User Account details */
 
 enum status{Active, Restricted, Closed};
 enum type{Admin, Client};
+
+/* Bank Account */
 
 typedef struct Bank_Account
 {
@@ -35,6 +36,7 @@ typedef struct Bank_Account
     struct Bank_Account * next;
 }Bank_Account;
 
+/* Linked List */
 
 typedef struct LinkedList
 {
@@ -43,7 +45,9 @@ typedef struct LinkedList
     int nNodes;
 }LinkedList;
 
-//initialize the default data of a client
+
+// initialize the default data of a client*/
+
 void Bank_Account_VoidInit(Bank_Account * node)
 {
     strcpy(node->full_name, "");
@@ -64,6 +68,7 @@ void Bank_Account_VoidInit(Bank_Account * node)
 
 
 //Initialization Function For The Accounts List
+
 void LinkedList_VoidInit(LinkedList * list)
 {
     list->head = NULL;
@@ -101,6 +106,7 @@ boolean validateInputs(char fullname[50], char nid[15], char gNid[15])
             break;
         }
     }
+
     //test if the age is less than 21
     boolean check_gNid = 0;
     for(int i = 0; gNid[i] != '\0'; ++i) {
@@ -258,11 +264,11 @@ LinkedList Start_Bank_System()
 
 /////// using Account ID and Password
 
-boolean login(LinkedList * list, char usrname[31], char passw[31])
+Bank_Account* login(LinkedList * list, char usrname[31], char passw[31])
 {
     if(list->head == NULL)
     {
-        return 0;
+        return NULL;
     }
 
     Bank_Account * temp = (Bank_Account*)malloc(sizeof(Bank_Account));
@@ -274,27 +280,25 @@ boolean login(LinkedList * list, char usrname[31], char passw[31])
         if(temp->username == usrname)
         {
             if (temp->password == passw)
-                return 1;
+                return temp;
             else
-                return 0;
+                return NULL;
         }
         temp = temp->next;
     }
-    return 0;
+    return NULL;
 }
 
 
 ///////// The Number Of Users /////////////
+
 int LinkedList_IntSize(LinkedList * list)
 {
     return list->nNodes;
 }
 
 
-
-
 //////////// Show The Informations Of All Users //////////////////////
-
 
 void print_allAccounts(LinkedList * list)
 {
@@ -320,6 +324,32 @@ void print_allAccounts(LinkedList * list)
 
 }
 
+void print_account(LinkedList * list, char bank_id[11])
+{
+    if(list->head == NULL)
+    {
+        printf("%s", "No Such Account...");
+        return;
+    }
+
+    Bank_Account * temp = (Bank_Account*)malloc(sizeof(Bank_Account));
+    Bank_Account_VoidInit(temp);
+
+    temp = list->head;
+    while(temp)
+    {
+        if(temp->bank_acc_id == bank_id){
+            printf("%s\t", temp->full_name);
+            printf("%s\t", temp->national_Id);
+            printf("%d\t", temp->balance);
+            printf("%d\t", temp->Account_Id);
+            printf("%s", "\n");
+            break;
+        }
+        temp = temp->next;
+    }
+    printf("%s", "\n");
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -372,7 +402,7 @@ Bank_Account * check_Existing_Accounnt_Id(LinkedList * bank , int id)
         account = account->next;
     }
 
-     return NULL;
+    return NULL;
 }
 
 //////// Open The Account //////////////
@@ -484,6 +514,46 @@ void Make_Transaction(LinkedList * bank, Bank_Account * sender)
     receiver->balance += balance;
 
     printf("Make Transaction Is Done.......\n");
+
+}
+
+////////////////////////// Get Cash //////////////////////////
+
+int Get_Cash(Bank_Account * client)
+{
+    int balance=enter_Valid_Balance_ToBe_Transacte(client);
+
+    if (balance == 0)
+    {
+        printf("Back To The Main Menu...\n");
+    }
+    else
+    {
+        client->balance -=balance;
+        printf("Getting Cash Is Done.......\n");
+    }
+    return balance;
+}
+
+
+////////////////////////// Deposit in Account /////////////////
+void Deposit_in_Account(Bank_Account * client)
+{
+
+    int balance;
+    printf("Please Enter the balance in digit:  ");
+    scanf("%d",&balance);
+
+    if (balance >= 0)
+    {
+        client->balance +=balance;
+        printf("Deposit Cash Is Done.......\n");
+
+    }
+    else
+    {
+        printf("Back To The Main Menu...\n");
+    }
 
 }
 
