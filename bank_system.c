@@ -1,27 +1,30 @@
-/*******************************************************/
+/***************************************************************************/
+/*   Author: Yasser Ashraf - Mariam Maged - Mohamed Fathy                               */
+/*   Description: Bank System Based On Linked_List implemented using C     */
+/*   Version: 1.0        
+/*	 Organization: ITI SMART Branch 										*/    
+/***************************************************************************/
 
-/*   Description: Bank System Based On Linked_List     */
 
-/*******************************************************/
-
+/* Required Libraries */
 #include <stdio.h>
 #include <stdlib.h>
 #include<windows.h>
 #include <ctype.h>
+/**********************/
+
 
 /* User Account details */
-
 enum status{Active, Restricted, Closed};
 enum type{Admin, Client};
+/***************************************************/
 
-/* Bank Account */
-
+/* Bank Account Structure */
 typedef struct Bank_Account
 {
     char full_name[50];
     char address[50];
     char national_Id[15];
-    // how about make it integar and increase every new account
     char bank_acc_id[11];
     char username[31];
     char password[31];
@@ -32,22 +35,21 @@ typedef struct Bank_Account
     char guardian_national_id[15];
     enum status account_status;
     enum type account_type;
-
     struct Bank_Account * next;
 }Bank_Account;
+/***************************************************/
+
 
 /* Linked List */
-
 typedef struct LinkedList
 {
     Bank_Account * head;
     Bank_Account * tail;
     int nNodes;
 }LinkedList;
-
+/***************************************************/
 
 // initialize the default data of a client*/
-
 void Bank_Account_VoidInit(Bank_Account * node)
 {
     strcpy(node->full_name, "");
@@ -65,20 +67,17 @@ void Bank_Account_VoidInit(Bank_Account * node)
     node->account_type = Client;
     node->next = NULL;
 }
+/***************************************************/
 
 
 //Initialization Function For The Accounts List
-
 void LinkedList_VoidInit(LinkedList * list)
 {
     list->head = NULL;
     list->tail = NULL;
     list->nNodes = 0;
 }
-
-
-
-//// Test If The Inputs That The User Provided Are Valid  //////
+/***************************************************/
 
 boolean validateInputs(char fullname[50], char nid[15], char gNid[15])
 {
@@ -97,7 +96,6 @@ boolean validateInputs(char fullname[50], char nid[15], char gNid[15])
         }
     }
 
-    //test if the nid >14
     boolean check_nid = 0;
     for(int i = 0; nid[i] != '\0'; ++i) {
 
@@ -107,7 +105,6 @@ boolean validateInputs(char fullname[50], char nid[15], char gNid[15])
         }
     }
 
-    //test if the age is less than 21
     boolean check_gNid = 0;
     for(int i = 0; gNid[i] != '\0'; ++i) {
 
@@ -122,11 +119,7 @@ boolean validateInputs(char fullname[50], char nid[15], char gNid[15])
 
     return 1;
 }
-
-
-
-/////// Check if the User Name is Used In The Clients Accounts Before ///////
-
+/***************************************************/
 
 boolean checkExistingUser(LinkedList * list, char usernm[31])
 {
@@ -148,9 +141,7 @@ boolean checkExistingUser(LinkedList * list, char usernm[31])
         }
         return 1;
 }
-
-
-//////////////////////// random Password ////////////////////////////////
+/***************************************************/
 
 void rand_str(char *dest, size_t length) {
     char charset[] = "0123456789"
@@ -163,11 +154,7 @@ void rand_str(char *dest, size_t length) {
     }
     *dest = '\0';
 }
-
-
-//////////// Create New Account ////////////////////
-// only admin user can use this function
-
+/***************************************************/
 boolean create_account(LinkedList * list,
     char fullname[50], char addr[50], char nid[15],
     char guardian_nid[15], char usrname[31],
@@ -179,17 +166,14 @@ boolean create_account(LinkedList * list,
 
     if(validateInputs(fullname, nid, guardian_nid) && checkExistingUser(list, usrname))
     {
-        // to add on account id
+        
         list->nNodes++;
-        // Generate Account _ID
+        
         strcpy(temp->full_name, fullname);
         strcpy(temp->address, addr);
         strcpy(temp->national_Id, nid);
         strcpy(temp->username, usrname);
-        //here use the random initialize the password
-
-        //rand_str(pass,32)
-
+        
         strcpy(temp->password, passw);
         strcpy(temp->guardian_national_id, guardian_nid);
         temp->age = agee;
@@ -211,21 +195,13 @@ boolean create_account(LinkedList * list,
     else
         return 0;
 }
-///////////////////////////////////////////////////////////////////////////////////////////
+/***************************************************/
 
-/////// Function To Initialize The The Admin Data And Some Initial Users ///////////////////////////
 LinkedList Start_Bank_System()
 {
     LinkedList bank;
     LinkedList_VoidInit(&bank);
 
-   /* LinkedList * list,
-    char fullname[100], char addr[100], char nid[14],
-    char guardian_nid[14], char usrname[31],
-    char passw[31], boolean guardian_status,
-    int agee, int balancee
-
-   */
     char fullname[50]="Mariam Maged Shaker Londey";
     char addr[50]="dddd";
     char nid[15]="21345678912345";
@@ -254,15 +230,7 @@ LinkedList Start_Bank_System()
 
     return bank;
 }
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////
-
-///////////// LOG In User Account ////////////////////////
-
-/////// using Account ID and Password
+/***************************************************/
 
 Bank_Account* login(LinkedList * list, char usrname[31], char passw[31])
 {
@@ -274,7 +242,7 @@ Bank_Account* login(LinkedList * list, char usrname[31], char passw[31])
     Bank_Account * temp = (Bank_Account*)malloc(sizeof(Bank_Account));
     Bank_Account_VoidInit(temp);
 
-       temp = list->head;
+    temp = list->head;
     while(temp)
     {
         if(strcmp(temp->username, usrname)==0)
@@ -288,18 +256,12 @@ Bank_Account* login(LinkedList * list, char usrname[31], char passw[31])
     }
     return NULL;
 }
-
-
-///////// The Number Of Users /////////////
-
+/***************************************************/
 int LinkedList_IntSize(LinkedList * list)
 {
     return list->nNodes;
 }
-
-
-//////////// Show The Informations Of All Users //////////////////////
-
+/***************************************************/
 void print_allAccounts(LinkedList * list)
 {
     if(list->head == NULL)
@@ -323,7 +285,7 @@ void print_allAccounts(LinkedList * list)
     printf("%s", "\n");
 
 }
-
+/***************************************************/
 void print_account(LinkedList * list, char bank_id[11])
 {
     if(list->head == NULL)
@@ -350,12 +312,7 @@ void print_account(LinkedList * list, char bank_id[11])
     }
     printf("%s", "\n");
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-////////////// Enter Valid Account ID ////////////////
-
+/***************************************************/
 int Enter_Valid_Input()
 {
     int account_id;
@@ -382,9 +339,7 @@ int Enter_Valid_Input()
     return account_id;
 
 }
-
-
-///////////// check the account_ID of user if it existed or not //////////////////
+/***************************************************////////////// check the account_ID of user if it existed or not //////////////////
 Bank_Account * check_Existing_Accounnt_Id(LinkedList * bank , int id)
 {
     Bank_Account * account = (Bank_Account*)malloc(sizeof(Bank_Account));
@@ -404,14 +359,7 @@ Bank_Account * check_Existing_Accounnt_Id(LinkedList * bank , int id)
 
     return NULL;
 }
-
-
-
-
-//////// Open The Account //////////////
-
-////// Choose The Service //////////////
-
+/***************************************************/
  Bank_Account * Open_Existing_Account(LinkedList* bank)
 {
     int account_id=Enter_Valid_Input();
@@ -442,16 +390,9 @@ Bank_Account * check_Existing_Accounnt_Id(LinkedList * bank , int id)
         scanf("%d",&service_num);
 
     }
-
     return account_u;
-
 }
-
-
-
-
-//////////////////////  Make Transaction ///////////////////
-
+/***************************************************/
 Bank_Account* Get_Reciever_Account(LinkedList * bank)
 {
     printf("Enter The Reciever Account ID :  ");
@@ -493,9 +434,7 @@ int enter_Valid_Balance_ToBe_Transacte(Bank_Account * sender)
 
     return balance;
 }
-
-
-
+/***************************************************/
 void Make_Transaction(LinkedList * bank, Bank_Account * sender)
 {
     Bank_Account * receiver = (Bank_Account*)malloc(sizeof(Bank_Account));
@@ -521,9 +460,7 @@ void Make_Transaction(LinkedList * bank, Bank_Account * sender)
     printf("Make Transaction Is Done.......\n");
 
 }
-
-////////////////////////// Get Cash //////////////////////////
-
+/***************************************************/
 int Get_Cash(Bank_Account * client)
 {
     int balance=enter_Valid_Balance_ToBe_Transacte(client);
@@ -539,9 +476,7 @@ int Get_Cash(Bank_Account * client)
     }
     return balance;
 }
-
-
-////////////////////////// Deposit in Account /////////////////
+/***************************************************/
 void Deposit_in_Account(Bank_Account * client)
 {
 
@@ -561,7 +496,43 @@ void Deposit_in_Account(Bank_Account * client)
     }
 
 }
+/***************************************************/
+int Get_Cash(Bank_Account * client)
+{
+    int balance=enter_Valid_Balance_ToBe_Transacte(client);
 
+    if (balance == 0)
+    {
+        printf("Back To The Main Menu...\n");
+    }
+    else
+    {
+        client->balance -=balance;
+        printf("Getting Cash Is Done.......\n");
+    }
+    return balance;
+}
+/***************************************************/
+void Deposit_in_Account(Bank_Account * client)
+{
+
+    int balance;
+    printf("Please Enter the balance in digit:  ");
+    scanf("%d",&balance);
+
+    if (balance >= 0)
+    {
+        client->balance +=balance;
+        printf("Deposit Cash Is Done.......\n");
+
+    }
+    else
+    {
+        printf("Back To The Main Menu...\n");
+
+    }
+}
+/***************************************************/
 
 int main(){
 
@@ -574,8 +545,7 @@ int main(){
     
     /*sender=Open_Existing_Account(&system);
     Make_Transaction(&system,sender);
-    print_allAccounts(&system);
-*/
+    print_allAccounts(&system);*/
 
 
     char username[31];
