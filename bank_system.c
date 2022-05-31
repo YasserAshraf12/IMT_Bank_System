@@ -1,8 +1,8 @@
 /***************************************************************************/
-/*   Author: Yasser Ashraf - Mariam Maged - Mohamed Fathy                               */
+/*   Author: Yasser Ashraf - Mariam Maged - Mohamed Fathy                  */
 /*   Description: Bank System Based On Linked_List implemented using C     */
-/*   Version: 1.0        
-/*	 Organization: ITI SMART Branch 										*/    
+/*   Version: 1.0                                                          */
+/*	 Organization: ITI SMART Branch 									   */    
 /***************************************************************************/
 
 
